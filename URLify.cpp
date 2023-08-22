@@ -7,29 +7,23 @@
 using namespace std;
 
 void urlify(string& input, int trueLen){
-  // calculate empty spaces 
-  int empty_space = 0;
+  int empty_count = 0;
   for (int i = 0; i < trueLen; i++){
     if(input[i] == ' '){
-      empty_space++;
+      empty_count++;
     }
   }
-
-  // Calculate how many space we actually need to replace empty spaces by "%20"
-  int actual = trueLen + 2 * empty_space;
-
-  // Edit the input string in-place from backwards by using two pointers
-  int index = actual - 1;
-  for (int i = trueLen - 1; i >= 0; i--){
-    if(input[i] != ' '){
-      swap(input[i], input[index]);
-      index--;
-    } else {
-      input[index--] = '0';
-      input[index--] = '2';
-      input[index--] = '%';
+  int actual = trueLen - 1;
+  int end = trueLen + empty_count * 2 - 1;
+  for(int i = actual; i >= 0; i--)
+    if(input[i] == ' '){
+      input[end--] = '0';
+      input[end--] = '2';
+      input[end--] = '%';
+     } else {
+      swap(input[i], input[end]);
+      end--;
     }
-  }
   return;
 }
 
